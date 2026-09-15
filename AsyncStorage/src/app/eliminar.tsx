@@ -5,11 +5,16 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Eliminar() {
 
+   // Guarda todos los gastos
   const [gastos, setGastos] = useState<any[]>([]);
+
+   // Guarda los mensajes que se muestran en pantalla
   const [mensaje, setMensaje] = useState("");
 
+  // Cargar los gastos guardados
   const cargarGastos = async () => {
 
+      // Buscar los gastos en AsyncStorage
     const datos = await AsyncStorage.getItem("gastos");
 
     if (datos === null) {
@@ -18,8 +23,10 @@ export default function Eliminar() {
       return;
     }
 
+    // Convertir los datos de texto a un arreglo
     const lista = JSON.parse(datos);
 
+     // Verificar si el arreglo está vacío
     if (lista.length === 0) {
       setGastos([]);
       setMensaje("No hay gastos para eliminar.");
@@ -32,15 +39,18 @@ export default function Eliminar() {
 
   const eliminarGasto = async (id: number) => {
 
+     // Crear una nueva lista sin el gasto seleccionado
     const nuevosGastos = gastos.filter(
       (gasto) => gasto.id !== id
     );
 
+    // Guardar la nueva lista en AsyncStorage
     await AsyncStorage.setItem(
       "gastos",
       JSON.stringify(nuevosGastos)
     );
 
+     // Actualizar la lista que aparece en pantalla
     setGastos(nuevosGastos);
 
     setMensaje("Gasto eliminado correctamente.");

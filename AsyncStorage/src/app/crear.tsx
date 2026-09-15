@@ -9,6 +9,7 @@ export default function Crear() {
   const [valor, setValor] = useState("");
   const [mensaje, setMensaje] = useState("");
 
+    // Función que se ejecuta cuando se presiona GUARDAR
   const guardarGasto = async () => {
 
     // Validar concepto
@@ -38,6 +39,7 @@ export default function Crear() {
       return;
     }
 
+       // Convertimos el valor de texto a número
     const numero = Number(valor);
 
     if (numero <= 0) {
@@ -53,13 +55,15 @@ export default function Crear() {
     // Buscar gastos guardados
     const datos = await AsyncStorage.getItem("gastos");
 
+        // Creamos una lista vacía para guardar los gastos
     let gastos = [];
 
+    // Verificamos si encontramos datos guardados
     if (datos !== null) {
       gastos = JSON.parse(datos);
     }
 
-    // Crear gasto
+      // Creamos un nuevo objeto con los datos del gasto
     const nuevoGasto = {
       id: Date.now(),
       concepto: concepto.trim(),

@@ -5,21 +5,28 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function Leer() {
 
+  // Guarda la lista de gastos
   const [gastos, setGastos] = useState<any[]>([]);
+
+  // Guarda los mensajes que se muestran en pantalla
   const [mensaje, setMensaje] = useState("");
 
+    // Función para leer los gastos guardados
   const leerGastos = async () => {
 
+     // Buscar los gastos guardados en AsyncStorage
     const datos = await AsyncStorage.getItem("gastos");
 
     if (datos === null) {
-      setGastos([]);
+      setGastos([]);  // Dejar la lista vacía
       setMensaje("No hay gastos guardados.");
       return;
     }
 
+    // Convertir los datos de texto a un arreglo
     const lista = JSON.parse(datos);
 
+        // Verificar si la lista está vacía
     if (lista.length === 0) {
       setGastos([]);
       setMensaje("No hay gastos guardados.");
