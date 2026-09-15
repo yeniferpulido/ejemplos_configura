@@ -1,23 +1,20 @@
 import { router } from "expo-router";
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View, Text, Button, StyleSheet, ScrollView, } from "react-native";
 import { useState } from "react";
 import * as SQLite from "expo-sqlite";
 
 export default function Eliminar() {
 
+  // Guardamos la lista de gastos
   const [gastos, setGastos] = useState<any[]>([]);
   const [mensaje, setMensaje] = useState("");
 
   const cargarGastos = async () => {
 
+        // Abrimos la base de datos gastos.db
     const db = await SQLite.openDatabaseAsync("gastos.db");
 
+     // Creamos la tabla si todavía no existe
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS gastos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,6 +23,9 @@ export default function Eliminar() {
       );
     `);
 
+
+ // Consultamos todos los gastos guardados
+    // ORDER BY id DESC muestra primero los más recientes
     const lista = await db.getAllAsync(
       "SELECT * FROM gastos ORDER BY id DESC"
     );
@@ -40,15 +40,19 @@ export default function Eliminar() {
     setMensaje("");
   };
 
+  // Recibe como parámetro el id del gasto
   const eliminarGasto = async (id: number) => {
 
     const db = await SQLite.openDatabaseAsync("gastos.db");
 
+       // Eliminamos de la tabla el gasto que tenga ese ID
+    // El signo ? se reemplaza por el id que recibimos
     await db.runAsync(
       "DELETE FROM gastos WHERE id = ?",
       id
     );
 
+        // Volvemos a consultar los gastos después de eliminar
     const lista = await db.getAllAsync(
       "SELECT * FROM gastos ORDER BY id DESC"
     );

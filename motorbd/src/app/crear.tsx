@@ -11,7 +11,7 @@ export default function Crear() {
 
   const guardarGasto = async () => {
 
-    // Validar concepto
+    // Verificamos que el concepto no esté vacío
     if (concepto.trim() === "") {
       setMensaje("Escribe el concepto.");
       return;
@@ -71,7 +71,10 @@ export default function Crear() {
 
     setMensaje("Gasto guardado correctamente.");
 
+
+     // Limpiamos el campo del concepto
     setConcepto("");
+    // Limpiamos el campo del valor
     setValor("");
   };
 

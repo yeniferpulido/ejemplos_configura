@@ -1,23 +1,24 @@
 import { router } from "expo-router";
-import {
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  ScrollView,
-} from "react-native";
+import { View, Text, Button, StyleSheet, ScrollView, } from "react-native";
 import { useState } from "react";
 import * as SQLite from "expo-sqlite";
 
+  // Componente principal de la pantalla
 export default function Leer() {
 
+    // Estado donde se guardan los gastos que se leen de SQLite
   const [gastos, setGastos] = useState<any[]>([]);
+
+  // Estado para mostrar mensajes al usuario
   const [mensaje, setMensaje] = useState("");
 
+ // Función que se ejecuta cuando se presiona "MOSTRAR GASTOS"
   const leerGastos = async () => {
 
+    // Abrimos o creamos la base de datos gastos.db
     const db = await SQLite.openDatabaseAsync("gastos.db");
 
+    // Creamos la tabla gastos si todavía no existe
     await db.execAsync(`
       CREATE TABLE IF NOT EXISTS gastos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,6 +27,9 @@ export default function Leer() {
       );
     `);
 
+
+        // Consultamos todos los gastos guardados
+    // ORDER BY id DESC hace que aparezcan primero los más recientes
     const lista = await db.getAllAsync(
       "SELECT * FROM gastos ORDER BY id DESC"
     );
